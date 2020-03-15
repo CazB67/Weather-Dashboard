@@ -23,6 +23,10 @@ function searchCity(cityName) {
         console.log(response);
         console.log(response.coord.lon);
         console.log(response.coord.lat);
+        console.log(response.weather[0].main);
+        
+        
+        
         var temperature = $("<p>").text("Temperature: " + response.main.temp + " \xB0C");
         var humidity = $("<p>").text("Humidity: " + response.main.humidity + "%");
         var windSpeed = $("<p>").text("Wind Speed: " + response.wind.speed + "m/h");
@@ -32,9 +36,7 @@ function searchCity(cityName) {
         var queryURL2 = "https://api.openweathermap.org/data/2.5/uvi?" + APIKey + "&lat=" + response.coord.lat + "&lon=" + response.coord.lon;
         console.log("https://api.openweathermap.org/data/2.5/uvi?" + APIKey + "&lat=" + response.coord.lat + "&lon=" + response.coord.lon);
 
-        
-
-
+       
     $.ajax({
         url: queryURL2,
         method: "GET"
