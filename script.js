@@ -1,4 +1,4 @@
-$( document ).ready( searchCity("Perth") );
+$( document ).ready( searchCity("Perth"));
 
 function searchCity(cityName) {
 
@@ -11,8 +11,7 @@ function searchCity(cityName) {
 
   // Storing the city name
   
-  date = moment().format("DD-MM-YYYY");
-  $("#cityHeading").text(cityName + " " + "(" + date + ")");
+  
 
     // Creating an AJAX call for the specific city being input
     $.ajax({
@@ -25,6 +24,15 @@ function searchCity(cityName) {
         console.log(response.coord.lat);
         console.log(response.weather[0].main);
         
+        var iconCode = (response.weather[0].icon);
+        var queryURL3 = "http://openweathermap.org/img/wn/" + iconCode + "@2x.png";
+        var date = moment().format("DD-MM-YYYY");
+        
+        
+        var weatherIcon = $("<img>").attr("src", queryURL3);
+        $("#cityHeading").text(cityName + " " + "(" + date + ")");
+        $("#cityHeading").append(weatherIcon);
+        console.log(weatherIcon);
         
         
         var temperature = $("<p>").text("Temperature: " + response.main.temp + " \xB0C");
@@ -35,9 +43,9 @@ function searchCity(cityName) {
 
         var queryURL2 = "https://api.openweathermap.org/data/2.5/uvi?" + APIKey + "&lat=" + response.coord.lat + "&lon=" + response.coord.lon;
         console.log("https://api.openweathermap.org/data/2.5/uvi?" + APIKey + "&lat=" + response.coord.lat + "&lon=" + response.coord.lon);
-
+        console.log(response);
        
-    $.ajax({
+       $.ajax({
         url: queryURL2,
         method: "GET"
       }).then(function(response) {
@@ -45,13 +53,51 @@ function searchCity(cityName) {
         console.log(response);
         var uvIndex = $("<p>").text("UV Index: " +  response.value);
         cityInfo.append(uvIndex);
-
-  
       });
     
     
     });
 
+    var queryURL4 = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=metric&" + APIKey;
+    console.log(queryURL4);
+
+    $.ajax({
+      url: queryURL4,
+      method: "GET"
+    }).then(function(response) {
+
+        console.log(response);
+        $(".forecastCard").empty()
+    //  console.log(response.list[7].main.temp);
+      for(var i=1; i<= 5; i++) {
+        
+        var cardDiv = $("<div>").addClass("card shadow-lg text-white bg-primary mx-auto mb-5 p-2 mr-1");
+        $(cardDiv).attr("style", "width:9rem; height:13rem");
+        $(".forecastCard").append(cardDiv);
+        var dateHeading = $("<h5>");
+        var tempDiv = $("<div>");
+        var humidityDiv = $("<div>");
+        
+        
+        
+        $(dateHeading).text(( moment().add(i, "days").format("DD-MM-YYYY")));
+        $(cardDiv).append(dateHeading);
+        console.log(response.list[i*7].weather[0].icon);
+        var iconCode2 = response.list[i*7].weather[0].icon;
+        var forecastIconURL = "http://openweathermap.org/img/wn/" + iconCode2 + "@2x.png";
+        var imageDiv = $("<img>").attr("src", forecastIconURL);
+        $(imageDiv).text(iconCode2);
+        $(cardDiv).append(imageDiv);
+        $(tempDiv).text("Temp: "  + response.list[i*7].main.temp + " \xB0C");
+        $(cardDiv).append(tempDiv);
+        $(humidityDiv).text("Humidity: "  + response.list[i*7].main.humidity + " %");
+        $(cardDiv).append(humidityDiv);
+      }
+
+
+
+
+    });
 
 }
     // Event handler for user clicking the select-artist button
@@ -62,6 +108,12 @@ function searchCity(cityName) {
     var inputCity = $("#city-name").val().trim();
     var cityDiv = $("<div>").addClass("list-group-item list-group-item-action");
     $(cityDiv).text(inputCity);
+    $(cityDiv).on("click", function(){
+      var listObject = $(this);
+      searchCity(listObject[0].innerText);
+    });
+
+
     $("#cityList").append(cityDiv);
     var uniqueLi = {};
 
@@ -72,6 +124,7 @@ function searchCity(cityName) {
       } else {
         uniqueLi[thisVal]="";
       }
+      
     })
 
     searchCity(inputCity);
