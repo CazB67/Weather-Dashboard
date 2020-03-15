@@ -4,7 +4,7 @@ function searchCity(cityName) {
 
   var APIKey = "appid=93a1b36ce896ae47aacbda156624ac6a";
 // Here we are building the URL we need to query the database
-  var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=metric&" + APIKey;
+  var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=metric&" + APIKey;
   console.log(queryURL);
   var cityInfo = $("#city-info");
   cityInfo.empty();
@@ -29,8 +29,8 @@ function searchCity(cityName) {
         
         cityInfo.append(temperature, humidity, windSpeed);
 
-        var queryURL2 = "http://api.openweathermap.org/data/2.5/uvi?" + APIKey + "&lat=" + response.coord.lat + "&lon=" + response.coord.lon;
-        console.log("http://api.openweathermap.org/data/2.5/uvi?" + APIKey + "&lat=" + response.coord.lat + "&lon=" + response.coord.lon);
+        var queryURL2 = "https://api.openweathermap.org/data/2.5/uvi?" + APIKey + "&lat=" + response.coord.lat + "&lon=" + response.coord.lon;
+        console.log("https://api.openweathermap.org/data/2.5/uvi?" + APIKey + "&lat=" + response.coord.lat + "&lon=" + response.coord.lon);
 
         
 
