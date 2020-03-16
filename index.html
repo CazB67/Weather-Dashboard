@@ -34,40 +34,28 @@
     <div class="container">
         <div class="row p-3">
             <div class= "col-md-3">
-             
+              <!-- Label for Text Box   -->
+              <label for="city-input">Search for a City:</label>
+              <!-- Text Input Box -->
+              <div class="input-group mb-3">
+                <input id="city-name" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                  <div class="input-group-append">
+                    <button class="btn btn-primary" id="search" type="button" id="search"><i class="fas fa-search"></i></button>
+                  </div>
+              </div>
+              <!--City Search History Goes Here-->
+              <div id= "cityList"></div>      
+            </div>
 
-                    <!-- Label for Text Box   -->
-                    <label for="city-input">Search for a City:</label>
-                
-                    <!-- Text Input Box -->
-                    <div class="input-group mb-3">
-                        <input id="city-name" type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
-                        <div class="input-group-append">
-                          <button class="btn btn-primary" id="search" type="button" id="search"><i class="fas fa-search"></i></button>
-                          
-                        </div>
-                       
-                    </div>
-                    
-                    <div id= "cityList"></div>
-                    
-                    
-            </div>
             <div class= "col-md-9">
-                
-                      <h2 id="cityHeading"></h2>
-                      <div id="city-info"></div>
-                      
-                   
-                <div>
-                    <h2>5-Day Forecast</h2>
-                </div>
-                <div class="row forecastCard">
-                  
-                </div>
-                
+              <h2 id="cityHeading"></h2>
+              <div id="city-info"></div>
+            <div>
+              <h2>5-Day Forecast</h2>
             </div>
+              <div class="row forecastCard"></div>
         </div>
+    </div>
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
         <script src="script.js"></script>

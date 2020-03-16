@@ -11,7 +11,7 @@ The purpose of this assignment is to create a weather application for a travelle
 * When a city in the search history is clicked the user is presented with current and future conditions for that city
 
 ## Installation
-To install this project the Open Weather API was used to gather the up to date and relevant weather information and icons. The date was set using moment.js.
+To install this project the Open Weather API was used to gather the up to date and relevant weather information and icons. The date was set using moment.js. Javascript and JQuery were used to create HTML and add info. Ajax calls were used to retrieve info from the Weather API.
 
 
 ## Usage
@@ -23,7 +23,7 @@ This has been deployed to the URLs
 
 ![Weather Dashboard](Capture.PNG)
 
-The application appears as above. Type in city name in input box then click search button. City weather information appears on the right hand side. When the city has been searched it appears as a list below the input box. An of the cities listed can be clicked and their relevant city weather information will appear on the right side of the browser.
+The application appears as above. Type in city name in input box then click search button. City weather information appears on the right hand side. When the city has been searched it appears as a list below the input box. Any of the cities listed can be clicked and their relevant city weather information will appear on the right side of the browser.
 
 
 
