@@ -44,7 +44,6 @@ function searchCity(cityName) {
         method: "GET"
       }).then(function(response) {
         
-        console.log(response.value);
         var uvIndex = $("<p>");
         $(uvIndex).text("UV Index: ");
         var span =$("<span>");
