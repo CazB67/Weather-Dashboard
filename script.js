@@ -19,7 +19,7 @@ function searchCity(cityName) {
         
         // Here we are building the URL we need to query the database for weather icons
         var iconCode = (response.weather[0].icon);
-        var queryWeatherIconURL = "http://openweathermap.org/img/wn/" + iconCode + "@2x.png";
+        var queryWeatherIconURL = "https://openweathermap.org/img/wn/" + iconCode + "@2x.png";
 
         //Variable to set the date
         var date = moment().format("DD-MM-YYYY");
@@ -100,7 +100,7 @@ function searchCity(cityName) {
         $(cardDiv).append(dateHeading);
 
         var iconCode2 = response.list[i*7].weather[0].icon;
-        var forecastIconURL = "http://openweathermap.org/img/wn/" + iconCode2 + "@2x.png";
+        var forecastIconURL = "https://openweathermap.org/img/wn/" + iconCode2 + "@2x.png";
         var imageDiv = $("<img>").attr("src", forecastIconURL);
         $(imageDiv).text(iconCode2);
         $(cardDiv).append(imageDiv);
