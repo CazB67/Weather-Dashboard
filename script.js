@@ -50,9 +50,33 @@ function searchCity(cityName) {
         method: "GET"
       }).then(function(response) {
         
-        console.log(response);
-        var uvIndex = $("<p>").text("UV Index: " +  response.value);
-        cityInfo.append(uvIndex);
+        console.log(response.value);
+        var uvIndex = $("<p>");
+        $(uvIndex).text("UV Index: ");
+        var span =$("<span>");
+        $(span).text(response.value);
+
+        $(cityInfo).append(uvIndex);
+        $(uvIndex).append(span);
+
+        if((response.value) < 3) {
+          $(span).text(response.value + " - LOW");
+         $(span).addClass("uvLow");
+
+        }else if ((response.value) >= 3 && (response.value) < 6 ) {
+          $(span).text(response.value + " - MODERATE");
+          $(span).addClass("uvModerate");
+        }else if ((response.value) >= 6 && (response.value) < 8 ) {
+          $(span).text(response.value + " - HIGH");
+          $(span).addClass("uvHigh");
+        }else if ((response.value) >= 8 && (response.value) < 11 ) {
+          $(span).text(response.value + " - VERY HIGH");
+          $(span).addClass("uvVeryHigh");
+        }else{
+          $(span).text(response.value + " - EXTREME");
+          $(span).addClass("uvExtreme");
+        }
+
       });
     
     

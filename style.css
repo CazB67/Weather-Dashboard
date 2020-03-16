@@ -2,3 +2,38 @@
     background-color: rgb(43, 43, 49);
     color: #ffffff;
 }
+
+.uvLow {
+    background-color: rgb(96, 221, 96);
+    padding: 10px;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.uvModerate {
+    background-color: rgb(252, 228, 17);
+    padding: 10px;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.uvHigh {
+    background-color: brown;
+    padding: 10px;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.uvVeryHigh {
+    background-color: rgb(243, 22, 22);
+    padding: 10px;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.uvExtreme {
+    background-color: rgb(204, 111, 204);
+    padding: 10px;
+    color: #ffffff;
+    font-weight: bold;
+}
