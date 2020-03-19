@@ -9,23 +9,22 @@ var storedCitiesLocalStorage = JSON.parse(localStorage.getItem("cities"));
   }
 
   console.log(cityListArray);
-for (var i=0; i < cityListArray.length; i++){
-    var cityDiv = $("<div>").addClass("list-group-item list-group-item-action");
-     $(cityDiv).text(cityListArray[i]);
-
-    //Event handler for city search history list
-    $(cityDiv).on("click", function(){
-      var listObject = $(this);
-      console.log(listObject);
-      searchCity(listObject[0].innerText);
-    });
-
-    $("#cityList").append(cityDiv);
-  }
+  for (var i=0; i < cityListArray.length; i++){
+      var cityDiv = $("<div>").addClass("list-group-item list-group-item-action");
+       $(cityDiv).text(cityListArray[i]);
   
-
-
+      //Event handler for city search history list
+      $(cityDiv).on("click", function(){
+        var listObject = $(this);
+        console.log(listObject);
+        searchCity(listObject[0].innerText);
+      });
+  
+      $("#cityList").append(cityDiv);
+    }
+  
 function searchCity(cityName) {
+  
   if(cityName === ""){
     console.log("empty string");
     return;
@@ -74,7 +73,7 @@ function searchCity(cityName) {
       }).then(function(response) {
         
         var uvIndex = $("<p>");
-        $(uvIndex).text("UV Index: ");
+        $(uvIndex).text("UV Index: ").addClass("mb-5");
         var span =$("<span>");
         $(span).text(response.value);
 
@@ -148,7 +147,6 @@ function searchCity(cityName) {
 }
     // Event handler for user clicking the city button
     $("#search").on("click", function(event) {
-        
     
         var inputCity = $("#city-name").val().trim();
 
@@ -189,9 +187,20 @@ function searchCity(cityName) {
       var thisVal = $(this).text();
       cityListArray.push(thisVal);
      })
+
+ 
+
     
      localStorage.setItem("cities", JSON.stringify(cityListArray));
+
+
     //Call searchCity() so it can read inputCity
     searchCity(inputCity);
     
 });
+
+$("#delete").on("click", function(){
+  cityListArray.length = 0;
+  localStorage.setItem("cities", JSON.stringify(cityListArray));
+  window.location = "index.html";
+  });
