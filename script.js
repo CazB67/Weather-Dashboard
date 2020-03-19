@@ -1,7 +1,36 @@
+var cityListArray =[];
 //Set default city
 $( document ).ready( searchCity("Perth"));
+var storedCitiesLocalStorage = JSON.parse(localStorage.getItem("cities"));
+
+  // If initials were retrieved from localStorage, update the initials array to it
+  if (storedCitiesLocalStorage !== null) {
+    cityListArray = storedCitiesLocalStorage;
+  }
+
+  console.log(cityListArray);
+for (var i=0; i < cityListArray.length; i++){
+    var cityDiv = $("<div>").addClass("list-group-item list-group-item-action");
+     $(cityDiv).text(cityListArray[i]);
+
+    //Event handler for city search history list
+    $(cityDiv).on("click", function(){
+      var listObject = $(this);
+      console.log(listObject);
+      searchCity(listObject[0].innerText);
+    });
+
+    $("#cityList").append(cityDiv);
+  }
+  
+
 
 function searchCity(cityName) {
+  if(cityName === ""){
+    console.log("empty string");
+    return;
+  }
+
 
   var APIKey = "appid=93a1b36ce896ae47aacbda156624ac6a";
 
@@ -119,10 +148,17 @@ function searchCity(cityName) {
 }
     // Event handler for user clicking the city button
     $("#search").on("click", function(event) {
-        // Preventing the button from trying to submit the form
-        event.preventDefault();
+        
     
         var inputCity = $("#city-name").val().trim();
+
+        if(inputCity === ""){
+          console.log("empty string 2");
+          return;
+        }
+
+        //Clear input box after clicking search icon
+        $('input[type="text"], textarea').val('');
         //DIV for city search history list to go
         var cityDiv = $("<div>").addClass("list-group-item list-group-item-action");
         $(cityDiv).text(inputCity);
@@ -131,12 +167,14 @@ function searchCity(cityName) {
         $(cityDiv).on("click", function(){
         var listObject = $(this);
         console.log(listObject);
+
         searchCity(listObject[0].innerText);
         });
 
         //Making sure cities only appear once in search history.
         $("#cityList").append(cityDiv);
-        var uniqueLi = {};
+
+        var uniqueLi = [];
         $("#cityList .list-group-item").each(function () {
         var thisVal = $(this).text();
         if ( (thisVal in uniqueLi) ) {
@@ -144,9 +182,15 @@ function searchCity(cityName) {
         } else {
         uniqueLi[thisVal]="";
         }
-      
     })
 
+    cityListArray.length=0;
+    $("#cityList .list-group-item").each(function () {
+      var thisVal = $(this).text();
+      cityListArray.push(thisVal);
+     })
+    
+     localStorage.setItem("cities", JSON.stringify(cityListArray));
     //Call searchCity() so it can read inputCity
     searchCity(inputCity);
     
