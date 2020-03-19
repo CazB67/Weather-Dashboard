@@ -1,7 +1,7 @@
 var cityListArray =[];
 //Set default city
-$( document ).ready( searchCity("Perth"));
-var storedCitiesLocalStorage = JSON.parse(localStorage.getItem("cities"));
+$(document).ready(function() {
+  var storedCitiesLocalStorage = JSON.parse(localStorage.getItem("cities"));
 
   // If cities were retrieved from localStorage, update the cityListArray array to it
   if (storedCitiesLocalStorage !== null) {
@@ -22,7 +22,12 @@ var storedCitiesLocalStorage = JSON.parse(localStorage.getItem("cities"));
   
       $("#cityList").append(cityDiv);
     }
-  
+    if(cityListArray.length !== 0 ){
+    searchCity(cityListArray[0]);
+    }else{
+      searchCity("Perth");
+    }
+});
 function searchCity(cityName) {
   
   if(cityName === ""){
