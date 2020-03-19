@@ -3,7 +3,7 @@ var cityListArray =[];
 $( document ).ready( searchCity("Perth"));
 var storedCitiesLocalStorage = JSON.parse(localStorage.getItem("cities"));
 
-  // If initials were retrieved from localStorage, update the initials array to it
+  // If cities were retrieved from localStorage, update the cityListArray array to it
   if (storedCitiesLocalStorage !== null) {
     cityListArray = storedCitiesLocalStorage;
   }
@@ -42,7 +42,7 @@ function searchCity(cityName) {
     // Creating an AJAX call for the specific city being input to get icons, temp, humidity and wind speed
     $.ajax({
       url: queryURL,
-      method: "GET"
+      method: "GET",
     }).then(function(response) {
         
         // Here we are building the URL we need to query the database for weather icons
@@ -101,8 +101,9 @@ function searchCity(cityName) {
 
       });
     
-    
     });
+
+
     //Building URL for weather forecast
     var queryURLForecast = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=metric&" + APIKey;
   
@@ -167,11 +168,13 @@ function searchCity(cityName) {
         console.log(listObject);
 
         searchCity(listObject[0].innerText);
+        
         });
 
-        //Making sure cities only appear once in search history.
+        //Making sure cities only appear once in search history. 
         $("#cityList").append(cityDiv);
 
+        //Google fu I don't completely understand
         var uniqueLi = [];
         $("#cityList .list-group-item").each(function () {
         var thisVal = $(this).text();
@@ -187,9 +190,6 @@ function searchCity(cityName) {
       var thisVal = $(this).text();
       cityListArray.push(thisVal);
      })
-
- 
-
     
      localStorage.setItem("cities", JSON.stringify(cityListArray));
 
@@ -199,6 +199,7 @@ function searchCity(cityName) {
     
 });
 
+//Delete button to clear stored city list
 $("#delete").on("click", function(){
   cityListArray.length = 0;
   localStorage.setItem("cities", JSON.stringify(cityListArray));
