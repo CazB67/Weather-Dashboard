@@ -1,4 +1,6 @@
+//Creating variable to store saved cities
 var cityListArray =[];
+
 //Set default city
 $(document).ready(function() {
   var storedCitiesLocalStorage = JSON.parse(localStorage.getItem("cities"));
@@ -13,8 +15,6 @@ $(document).ready(function() {
        $(cityDiv).text(cityListArray[i]);
        //Delete button for every city, time permitting
       // var buttonDiv = $("<button>").addClass("btn btn-primary mt-1 floatright delete");
-       
-      
   
       //Event handler for city search history list
       $(cityDiv).on("click", function(){
@@ -34,6 +34,8 @@ $(document).ready(function() {
       searchCity("Perth");
     }
 });
+
+
 function searchCity(cityName) {
   
   if(cityName === ""){
