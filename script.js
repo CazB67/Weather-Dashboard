@@ -8,10 +8,13 @@ $(document).ready(function() {
     cityListArray = storedCitiesLocalStorage;
   }
 
-  console.log(cityListArray);
   for (var i=0; i < cityListArray.length; i++){
-      var cityDiv = $("<div>").addClass("list-group-item list-group-item-action");
+      var cityDiv = $("<div>").addClass("list-group-item list-group-item-action cityDiv p-4");
        $(cityDiv).text(cityListArray[i]);
+       //Delete button for every city, time permitting
+      // var buttonDiv = $("<button>").addClass("btn btn-primary mt-1 floatright delete");
+       
+      
   
       //Event handler for city search history list
       $(cityDiv).on("click", function(){
@@ -21,6 +24,9 @@ $(document).ready(function() {
       });
   
       $("#cityList").append(cityDiv);
+      //$(cityDiv).append(buttonDiv);
+      //$(buttonDiv).append(deleteIcon);
+      
     }
     if(cityListArray.length !== 0 ){
     searchCity(cityListArray[0]);
