@@ -19,6 +19,9 @@ $(document).ready(function() {
         getWeatherData(cityListArray[0]);
         getForecast(cityListArray[0]);
       }
+    } else {
+      getWeatherData("Perth");
+      getForecast("Perth");
     }
     
   }
