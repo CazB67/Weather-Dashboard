@@ -170,6 +170,15 @@ $(document).ready(function() {
 
 
     // Event handler for user clicking the city button
+    $("#city-name").on("keypress", function(e) {
+      if(e.which === 13){
+        var cityName = capitaliseCityName($("#city-name").val().trim());
+        
+        getWeatherData(cityName);
+        getForecast(cityName);
+      }  
+    })
+
     $("#search").on("click", function() {
       var cityName = capitaliseCityName($("#city-name").val().trim());
       
