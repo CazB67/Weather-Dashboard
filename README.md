@@ -25,11 +25,6 @@ This has been deployed to the URLs
 
 The application appears as above. Type in city name in input box then click search button. City weather information appears on the right hand side. When the city has been searched it appears as a list below the input box. Any of the cities listed can be clicked and their relevant city weather information will appear on the right side of the browser. When the delete button is clicked, the list of city names is removed. 
 
-## Bugs and Future Improvements
-* You can type in a non city and it gets added to the list. 
-* I wanted to do individual delete buttons but can't get it to work.
-
-
 
 ## Credits
 * Team at UWA Coding Bootcamp
