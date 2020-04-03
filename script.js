@@ -1,95 +1,204 @@
-//Creating variable to store saved cities
+
 var cityListArray =[];
 
-//Set default city
 $(document).ready(function() {
-  var storedCitiesLocalStorage = JSON.parse(localStorage.getItem("cities"));
-
-  // If cities were retrieved from localStorage, update the cityListArray array to it
-  if (storedCitiesLocalStorage !== null) {
-    cityListArray = storedCitiesLocalStorage;
+  
+  loadSavedCities();
+  
+  function loadSavedCities(){
+    var storedCitiesLocalStorage = JSON.parse(localStorage.getItem("cities"));
+    // If cities were retrieved from localStorage, update the cityListArray array to it
+    if (storedCitiesLocalStorage !== null) {
+      cityListArray = storedCitiesLocalStorage;
+   
+      if(cityListArray.length === 0 ){
+       getWeatherData("Perth");
+        getForecast("Perth");
+      }else {
+        renderCities();
+        getWeatherData(cityListArray[0]);
+        getForecast(cityListArray[0]);
+      }
+    }
+    
   }
 
-  for (var i=0; i < cityListArray.length; i++){
-      var cityDiv = $("<div>").addClass("list-group-item list-group-item-action cityDiv p-4");
+  function saveCities(){
+    localStorage.setItem("cities", JSON.stringify(cityListArray));
+
+  }
+
+  function renderCities(){
+    $("#cityList").empty();
+    for (var i=0; i < cityListArray.length; i++){
+
+      var cityDiv = $("<div>").addClass("list-group-item list-group-item-action cityDiv");
        $(cityDiv).text(cityListArray[i]);
-       //Delete button for every city, time permitting
-      // var buttonDiv = $("<button>").addClass("btn btn-primary mt-1 floatright delete");
-  
+       
       //Event handler for city search history list
       $(cityDiv).on("click", function(){
         var listObject = $(this);
-        console.log(listObject);
-        searchCity(listObject[0].innerText);
+        console.log(this);
+        getWeatherData(listObject[0].innerText);
+        getForecast(listObject[0].innerText);
       });
-  
-      $("#cityList").append(cityDiv);
-      //$(cityDiv).append(buttonDiv);
-      //$(buttonDiv).append(deleteIcon);
       
-    }
-    if(cityListArray.length !== 0 ){
-    searchCity(cityListArray[0]);
-    }else{
-      searchCity("Perth");
-    }
-});
+        $("#cityList").append(cityDiv);
+        var deleteIcon = $("<i>").addClass("far fa-times-circle pt-2 float-right");
+        $(deleteIcon).data("row", i);
+        $(cityDiv).append(deleteIcon);
+        $(deleteIcon).on("click", function(){
+        console.log($(this).data("row"));
+        var deleteRow = $(this).data("row");
+        cityListArray.splice(deleteRow, 1);
+        saveCities();
+        renderCities();
+      });
 
+      
 
-function searchCity(cityName) {
+    }
+  }
+
+  function capitaliseCityName (str) {
+    var result = [];
   
-  if(cityName === ""){
-    console.log("empty string");
-    return;
+    var words = str.split(" ");
+  
+    for (var i = 0; i < words.length; i++) {
+      var word = words[i].split("");
+  
+      word[0] = word[0].toUpperCase();
+  
+      result.push(word.join(""));
+    }
+  
+    return result.join(" ");
+  };
+
+
+  function getWeatherData(cityName){
+    
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=metric&appid=93a1b36ce896ae47aacbda156624ac6a";
+ 
+    $.ajax({
+        url: queryURL,
+        method: 'GET',
+        success: function(response){
+            currentWeather(response, cityName);
+            savedList(cityName);
+        },
+        error: function(){
+
+
+        }})  
+        .done(function(response){
+    
+    });
+  };
+
+
+  function getUVData(lattitude, longitude) {
+
+   var queryURL = "https://api.openweathermap.org/data/2.5/uvi?appid=93a1b36ce896ae47aacbda156624ac6a&lat=" + lattitude + "&lon=" + longitude;
+ 
+    $.ajax({
+        url: queryURL,
+        method: 'GET',
+        success: function(response){
+          uvIndex(response);
+
+        },
+        error: function(){
+
+
+        }})  
+        .done(function(response){
+    
+    });
+
+  };
+
+  function getForecast(cityName) {
+
+    var queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=metric&appid=93a1b36ce896ae47aacbda156624ac6a";
+  
+     $.ajax({
+         url: queryURL,
+         method: 'GET',
+         success: function(response){
+           fiveDayForecast(response);
+ 
+         },
+         error: function(){
+ 
+ 
+         }})  
+         .done(function(response){
+     
+     });
+ 
+   };
+
+  function currentWeather(response, cityName){
+
+     // Here we are building the URL we need to query the database for weather icons
+     var iconCode = (response.weather[0].icon);
+     var queryWeatherIconURL = "https://openweathermap.org/img/wn/" + iconCode + "@2x.png";
+
+     //Variable to set the date
+     var date = moment().format("DD-MM-YYYY");
+        
+     //Creating HTML for heading and adding date and icon
+     var weatherIcon = $("<img>").attr("src", queryWeatherIconURL);
+     $("#cityHeading").text(cityName + " " + "(" + date + ")");
+     $("#cityHeading").append(weatherIcon);
+
+     //Creating HTML for response weather info
+     var temperature = $("<p>").text("Temperature: " + response.main.temp + " \xB0C");
+     var humidity = $("<p>").text("Humidity: " + response.main.humidity + "%");
+     var windSpeed = $("<p>").text("Wind Speed: " + response.wind.speed + "m/h");
+     var cityInfo = $("#city-info");
+     cityInfo.empty();
+     cityInfo.append(temperature, humidity, windSpeed);
+     getUVData(response.coord.lat, response.coord.lon);
+     //uvIndex(response);
   }
 
 
-  var APIKey = "appid=93a1b36ce896ae47aacbda156624ac6a";
+    // Event handler for user clicking the city button
+    $("#search").on("click", function() {
+      var cityName = capitaliseCityName($("#city-name").val().trim());
+      
+      getWeatherData(cityName);
+      getForecast(cityName);
+    })
 
-  // Here we are building the URL we need to query the database for city current weather
-  var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=metric&" + APIKey;
-  //console.log(queryURL);
-  var cityInfo = $("#city-info");
-  cityInfo.empty();
+    function savedList(cityName){
+      //Creating variable to store saved cities
+      var foundDuplicate = 0;
+      for(var i=0; i< cityListArray.length; i++) {
+        console.log(cityListArray[i]);
+        if(cityName.toUpperCase() === cityListArray[i].toUpperCase()){
+          console.log("Found A Duplicate");
+          foundDuplicate = 1;
+        }
+      }
+      if (foundDuplicate === 0) {
+        cityListArray.push(cityName); 
+      }
+        saveCities();  
+        renderCities();
+      
+    }
 
-    // Creating an AJAX call for the specific city being input to get icons, temp, humidity and wind speed
-    $.ajax({
-      url: queryURL,
-      method: "GET",
-    }).then(function(response) {
-        
-        // Here we are building the URL we need to query the database for weather icons
-        var iconCode = (response.weather[0].icon);
-        var queryWeatherIconURL = "https://openweathermap.org/img/wn/" + iconCode + "@2x.png";
-
-        //Variable to set the date
-        var date = moment().format("DD-MM-YYYY");
-        
-        //Creating HTML for heading and adding date and icon
-        var weatherIcon = $("<img>").attr("src", queryWeatherIconURL);
-        $("#cityHeading").text(cityName + " " + "(" + date + ")");
-        $("#cityHeading").append(weatherIcon);
-        
-        //Creating HTML for response weather info
-        var temperature = $("<p>").text("Temperature: " + response.main.temp + " \xB0C");
-        var humidity = $("<p>").text("Humidity: " + response.main.humidity + "%");
-        var windSpeed = $("<p>").text("Wind Speed: " + response.wind.speed + "m/h");
-        cityInfo.append(temperature, humidity, windSpeed);
-
-        //Building the URL for UV index info
-        var queryURL2 = "https://api.openweathermap.org/data/2.5/uvi?" + APIKey + "&lat=" + response.coord.lat + "&lon=" + response.coord.lon
-       
-      // Ajax call for uv index info
-       $.ajax({
-        url: queryURL2,
-        method: "GET"
-      }).then(function(response) {
+    function uvIndex(response) {
         
         var uvIndex = $("<p>");
         $(uvIndex).text("UV Index: ").addClass("mb-5");
         var span =$("<span>");
         $(span).text(response.value);
-
+        var cityInfo = $("#city-info");
         $(cityInfo).append(uvIndex);
         $(uvIndex).append(span);
 
@@ -111,24 +220,11 @@ function searchCity(cityName) {
           $(span).text(response.value + " - EXTREME");
           $(span).addClass("uvExtreme");
         }
-
-      });
     
-    });
+    }
 
-
-    //Building URL for weather forecast
-    var queryURLForecast = "https://api.openweathermap.org/data/2.5/forecast?q=" + cityName + "&units=metric&" + APIKey;
-  
-
-    $.ajax({
-      url: queryURLForecast,
-      method: "GET"
-    }).then(function(response) {
-
-        //Empty forecast cards div before adding new ones
-        $(".forecastCard").empty()
-   
+    function fiveDayForecast(response) {
+      $(".forecastCard").empty()
       //Looping through info in object to dynamically add cards and info
       for(var i=1; i<= 5; i++) {
         
@@ -155,66 +251,6 @@ function searchCity(cityName) {
         $(cardDiv).append(humidityDiv);
          
       }
+    }
 
-    });
-
-}
-    // Event handler for user clicking the city button
-    $("#search").on("click", function(event) {
-    
-        var inputCity = $("#city-name").val().trim();
-
-        if(inputCity === ""){
-          console.log("empty string 2");
-          return;
-        }
-
-        //Clear input box after clicking search icon
-        $('input[type="text"], textarea').val('');
-        //DIV for city search history list to go
-        var cityDiv = $("<div>").addClass("list-group-item list-group-item-action");
-        $(cityDiv).text(inputCity);
-
-        //Event handler for city search history list
-        $(cityDiv).on("click", function(){
-        var listObject = $(this);
-        console.log(listObject);
-
-        searchCity(listObject[0].innerText);
-        
-        });
-
-        //Making sure cities only appear once in search history. 
-        $("#cityList").append(cityDiv);
-
-        //Google fu I don't completely understand
-        var uniqueLi = [];
-        $("#cityList .list-group-item").each(function () {
-        var thisVal = $(this).text();
-        if ( (thisVal in uniqueLi) ) {
-        $(this).remove();
-        } else {
-        uniqueLi[thisVal]="";
-        }
-    })
-
-    cityListArray.length=0;
-    $("#cityList .list-group-item").each(function () {
-      var thisVal = $(this).text();
-      cityListArray.push(thisVal);
-     })
-    
-     localStorage.setItem("cities", JSON.stringify(cityListArray));
-
-
-    //Call searchCity() so it can read inputCity
-    searchCity(inputCity);
-    
-});
-
-//Delete button to clear stored city list
-$("#delete").on("click", function(){
-  cityListArray.length = 0;
-  localStorage.setItem("cities", JSON.stringify(cityListArray));
-  window.location = "index.html";
-  });
+})
