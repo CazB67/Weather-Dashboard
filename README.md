@@ -1,5 +1,5 @@
 # Weather-Dashboard
-Assignment 6
+A weather dashboard that runs in the browser and features dynamically updated HTML and CSS. It uses the OpenWeather API to retrieve weather data for cities.
 
 ## Description
 The purpose of this assignment is to create a weather application for a traveller so that they can access the weather for multiple cities and use this information to plan their trip. The development of this application required the following criteria:
