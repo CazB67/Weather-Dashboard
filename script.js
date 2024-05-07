@@ -241,7 +241,7 @@ $(document).ready(function() {
       for(var i=1; i<= 5; i++) {
         
         var cardDiv = $("<div>").addClass("card shadow-lg text-white bg-primary mb-3 p-2 mr-3");
-        $(cardDiv).attr("style", "width:9rem; height:13rem");
+        $(cardDiv).attr("style", "width:9rem");
         $(".forecastCard").append(cardDiv);
 
         var dateHeading = $("<h5>");

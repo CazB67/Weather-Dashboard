@@ -5,37 +5,42 @@
 
 .uvLow {
     background-color: rgb(96, 221, 96);
-    padding: 10px;
+    padding: 6px;
     color: #ffffff;
     font-weight: bold;
 }
 
 .uvModerate {
     background-color: rgb(252, 228, 17);
-    padding: 10px;
+    padding: 6px;
     color: #ffffff;
     font-weight: bold;
+    border-radius: 6px;
 }
 
 .uvHigh {
     background-color: brown;
-    padding: 10px;
+    padding: 6px;
     color: #ffffff;
     font-weight: bold;
+    border-radius: 6px;
+    border-radius: 6px;
 }
 
 .uvVeryHigh {
     background-color: rgb(243, 22, 22);
-    padding: 10px;
+    padding: 6px;
     color: #ffffff;
     font-weight: bold;
+    border-radius: 6px;
 }
 
 .uvExtreme {
     background-color: rgb(204, 111, 204);
-    padding: 10px;
+    padding: 6px;
     color: #ffffff;
     font-weight: bold;
+    border-radius: 6px;
 }
 
 .floatright {
